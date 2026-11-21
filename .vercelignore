@@ -1,0 +1,24 @@
+# dependencies & build
+node_modules/
+.next/
+.next-test/
+.next-lab/
+.next-dev/
+.next-seed/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# env
+.env
+.env*.local
+
+# Original source media & private documents — kept locally, never published.
+# Web-ready copies live in public/images (see scripts/prepare-assets.py).
+/Images/
+/VoltageAfrica_Prototype and Evidence and media/
+
+# misc
+.DS_Store
+.vercel
+npm-debug.log*

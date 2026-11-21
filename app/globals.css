@@ -1,0 +1,498 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────
+   VoltageAfrica · "Field Atlas" design system
+   Parchment & white canvas · charcoal type · forest anchors ·
+   solar amber reserved for energy itself.
+   ─────────────────────────────────────────────────────────── */
+@theme {
+  --color-parchment: #f3efe5;
+  --color-parchment-2: #e9e3d5;
+  --color-parchment-3: #ddd5c3;
+  --color-paper: #ffffff;
+  --color-charcoal: #24241f;
+  --color-charcoal-2: #3a3a33;
+  --color-stone: #625d51; /* secondary text — 5.6:1 parchment, 5.0:1 parchment-2 */
+  --color-stone-2: #8f897b; /* decorative / large only */
+  --color-rule: rgb(36 36 31 / 0.14);
+  --color-rule-strong: rgb(36 36 31 / 0.28);
+
+  --color-amber: #e8a344; /* fills, energy, highlights */
+  --color-amber-soft: #f6dcb2;
+  --color-amber-ink: #95570f; /* amber for text on light — 5.0:1 parchment */
+
+  --color-forest: #344b3b;
+  --color-forest-2: #2a3e30;
+  --color-forest-3: #435e4b;
+  --color-sage: #b9c6b0; /* secondary text on forest — 5.2:1 */
+  --color-forest-rule: rgb(243 239 229 / 0.18);
+
+  /* Admin workspace (CMS) */
+  --color-ws: #f4f3ef;
+  --color-ws-line: #e3e1db;
+  --color-ws-ink: #1d1d1a;
+
+  --color-clay: #a2603a; /* large text / graphics only (4.3:1) */
+  --color-night: #1c2230;
+
+  /* Chart series — validated for light surface (dataviz validator) */
+  --color-series-gen: #c47a12;
+  --color-series-demand: #2f6fd0;
+  --color-series-battery: #2f8a55;
+  --color-series-alt: #8a4fb8; /* 4th categorical slot (validated with the three above) */
+  --color-status-critical: #d03b3b; /* unserved energy: always paired with a label */
+  --color-status-critical-ink: #a32626; /* critical as text */
+
+  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif-face), ui-serif, Georgia, serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Themes: light (default) and dark.
+   The inline script in app/layout.tsx sets <html data-theme> before paint
+   from the saved choice, falling back to the OS preference.
+
+   Dark mode inverts the token roles rather than the components:
+   "parchment/paper" stay the page surfaces, "charcoal/stone" stay the ink.
+   Contexts that are dark in both themes (forest & charcoal bands, text over
+   photography) carry .on-forest or .on-dark and keep the light-theme values,
+   so their parchment type and charcoal fills read exactly as designed.
+   ─────────────────────────────────────────────────────────── */
+/* Screen only: printed pages (e.g. the fact sheet) always use the light palette. */
+@media screen {
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-parchment: #15150f;
+  --color-parchment-2: #1d1d17;
+  --color-parchment-3: #2b2b23;
+  --color-paper: #20201a;
+  --color-charcoal: #f1ece0;
+  --color-charcoal-2: #d8d2c4;
+  --color-stone: #b0a999; /* 8.4:1 on parchment, 7.4:1 on paper */
+  --color-stone-2: #857f72;
+  --color-rule: rgb(241 236 224 / 0.14);
+  --color-rule-strong: rgb(241 236 224 / 0.3);
+
+  --color-amber-soft: #4a3819;
+  --color-amber-ink: #f0b866; /* amber as text on dark — 9.6:1 */
+
+  --color-forest: #9cc2a6; /* accent text / hover fills on dark — 9.5:1 */
+  --color-forest-2: #b3d2bb;
+  --color-forest-3: #86b092;
+  --color-clay: #d9926a;
+
+  --color-series-gen: #e0a03c;
+  --color-series-demand: #6d9ff0;
+  --color-series-battery: #52b77e;
+  --color-series-alt: #b58ad9;
+  --color-status-critical: #ec5c5c;
+  --color-status-critical-ink: #ff8f85;
+}
+}
+
+/* Always-dark contexts keep the light-theme palette in both themes. */
+[data-theme="dark"] :is(.on-forest, .on-dark, .bg-forest),
+.theme-light {
+  color-scheme: light;
+  --color-parchment: #f3efe5;
+  --color-parchment-2: #e9e3d5;
+  --color-parchment-3: #ddd5c3;
+  --color-paper: #ffffff;
+  --color-charcoal: #24241f;
+  --color-charcoal-2: #3a3a33;
+  --color-stone: #625d51;
+  --color-stone-2: #8f897b;
+  --color-rule: rgb(36 36 31 / 0.14);
+  --color-rule-strong: rgb(36 36 31 / 0.28);
+  --color-amber-soft: #f6dcb2;
+  --color-amber-ink: #95570f;
+  --color-forest: #344b3b;
+  --color-forest-2: #2a3e30;
+  --color-forest-3: #435e4b;
+  --color-clay: #a2603a;
+  --color-series-gen: #c47a12;
+  --color-series-demand: #2f6fd0;
+  --color-series-battery: #2f8a55;
+  --color-series-alt: #8a4fb8;
+  --color-status-critical: #d03b3b;
+  --color-status-critical-ink: #a32626;
+}
+/* Amber is the same in both themes, so type on it stays charcoal. */
+[data-theme="dark"] :is(.bg-amber, .hover\:bg-amber:hover, .group:hover .group-hover\:bg-amber, .focus\:bg-amber:focus) {
+  --color-charcoal: #24241f;
+  --color-charcoal-2: #3a3a33;
+  --color-parchment: #f3efe5;
+}
+/* "Charcoal chip with amber text" (active toggles, selected scenario, arrow buttons): in dark mode the
+   chip turns light, where solar amber reads at only 1.8:1. Use a deep amber there instead (≈5:1). */
+[data-theme="dark"] :is(.bg-charcoal.text-amber, .bg-charcoal .text-amber):not(:is(.on-forest, .on-dark, .bg-forest, .theme-light) *):not(.on-forest, .on-dark) {
+  color: #8a4f0c;
+}
+[data-theme="dark"] ::selection {
+  color: #24241f;
+}
+
+/* Header logo: in dark mode, the "primary" (dark ink) logo swaps for the reverse. */
+[data-theme="dark"] .logo-swap[data-show="primary"] > .logo-primary {
+  opacity: 0;
+}
+[data-theme="dark"] .logo-swap[data-show="primary"] > .logo-reverse {
+  opacity: 1;
+}
+
+/* Per-theme content (e.g. the footer's monumental logo). Print always shows the light version. */
+.show-dark {
+  display: none;
+}
+@media screen {
+  [data-theme="dark"] .show-dark {
+    display: block;
+  }
+  [data-theme="dark"] .show-light {
+    display: none;
+  }
+}
+
+/* Theme toggle: shows the theme you would switch to */
+.theme-icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+  transition: opacity 0.3s ease, transform 0.5s var(--ease-expo);
+}
+.theme-icon-moon {
+  transition: opacity 0.3s ease, transform 0.5s var(--ease-expo);
+}
+[data-theme="dark"] .theme-icon-sun {
+  opacity: 1;
+  transform: none;
+}
+[data-theme="dark"] .theme-icon-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+/* Textures tuned for dark surfaces */
+/* Dark: white noise with alpha = brightness (equivalent to the screen blend mode, without blending). */
+[data-theme="dark"] .grain::after {
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.333 0.333 0.333 0 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+[data-theme="dark"] .contour {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cg fill='none' stroke='%23f1ece0' stroke-opacity='0.06'%3E%3Cpath d='M-20 120c80-40 160 30 240-10s160-70 280-20'/%3E%3Cpath d='M-20 170c90-30 150 40 250 0s170-60 270-10'/%3E%3Cpath d='M-20 230c70-50 170 20 260-15s150-40 260 5'/%3E%3Cpath d='M-20 300c100-20 160 40 260 10s160-50 260-10'/%3E%3Cpath d='M-20 370c80-40 170 30 250-5s170-40 270 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background: var(--color-parchment);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-amber);
+    color: var(--color-charcoal);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-amber-ink);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .on-forest :focus-visible {
+    outline-color: var(--color-amber);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: 1520px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4.5vw, 4rem);
+  }
+
+  /* Display serif: Fraunces, soft & confident */
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+  }
+  .display em,
+  .serif-italic {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .serif {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 48, "SOFT" 30;
+  }
+
+  /* Small caps-style kicker — used sparingly */
+  .kicker {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  .tag-sim {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px dashed currentColor;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-expo);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Survey-map contour texture for technical surfaces */
+  .contour {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cg fill='none' stroke='%2324241f' stroke-opacity='0.06'%3E%3Cpath d='M-20 120c80-40 160 30 240-10s160-70 280-20'/%3E%3Cpath d='M-20 170c90-30 150 40 250 0s170-60 270-10'/%3E%3Cpath d='M-20 230c70-50 170 20 260-15s150-40 260 5'/%3E%3Cpath d='M-20 300c100-20 160 40 260 10s160-50 260-10'/%3E%3Cpath d='M-20 370c80-40 170 30 250-5s170-40 270 0'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 480px 480px;
+  }
+  .contour-light {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cg fill='none' stroke='%23f3efe5' stroke-opacity='0.07'%3E%3Cpath d='M-20 120c80-40 160 30 240-10s160-70 280-20'/%3E%3Cpath d='M-20 170c90-30 150 40 250 0s170-60 270-10'/%3E%3Cpath d='M-20 230c70-50 170 20 260-15s150-40 260 5'/%3E%3Cpath d='M-20 300c100-20 160 40 260 10s160-50 260-10'/%3E%3Cpath d='M-20 370c80-40 170 30 250-5s170-40 270 0'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 480px 480px;
+  }
+}
+
+/* Paper grain — subtle, static */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  /* No mix-blend-mode: a blended full-screen fixed layer makes the browser re-blend the whole
+     viewport on every scroll frame. Instead the noise is pre-converted to black with alpha = darkness,
+     which gives the same result as multiply, as a static layer the compositor just moves. */
+  transform: translateZ(0);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.333 -0.333 -0.333 0 1'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+.flow-dash {
+  stroke-dasharray: 2 10;
+  animation: flow-dash 2.4s linear infinite;
+}
+
+/* Energy Lab: animated power flow (speed set per path via --flow-dur) */
+@keyframes lab-flow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+.lab-flow {
+  stroke-dasharray: 3 17;
+  stroke-linecap: round;
+  animation: lab-flow var(--flow-dur, 2s) linear infinite;
+}
+.lab-flow-rev {
+  animation-direction: reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-flow {
+    animation: none;
+  }
+}
+
+/* Energy Lab range inputs: thin track, amber fill, charcoal thumb */
+.lab-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.lab-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--color-amber) var(--pct, 50%), var(--color-rule-strong) var(--pct, 50%));
+}
+.lab-range::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-rule-strong);
+}
+.lab-range::-moz-range-progress {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-amber);
+}
+.lab-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -7.5px;
+  height: 18px;
+  width: 18px;
+  border-radius: 999px;
+  background: var(--color-charcoal);
+  border: 3px solid var(--color-paper);
+  box-shadow: 0 0 0 1px rgb(36 36 31 / 0.25);
+}
+.lab-range::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 999px;
+  background: var(--color-charcoal);
+  border: 3px solid var(--color-paper);
+  box-shadow: 0 0 0 1px rgb(36 36 31 / 0.25);
+}
+.lab-range:focus-visible {
+  outline: 2px solid var(--color-amber-ink);
+  outline-offset: 2px;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(220%);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hero film: slow camera move per scene, driven by CSS variables */
+@keyframes hero-drift {
+  from {
+    transform: translate3d(var(--x0), var(--y0), 0) scale(var(--s0));
+  }
+  to {
+    transform: translate3d(var(--x1), var(--y1), 0) scale(var(--s1));
+  }
+}
+@keyframes hero-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.rail {
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* Print: a clean document (e.g. the funders & press fact sheet) */
+@media print {
+  @page {
+    margin: 16mm;
+  }
+  body {
+    background: #fff;
+  }
+  .grain::after {
+    display: none;
+  }
+  [data-section] section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    break-inside: avoid;
+  }
+}

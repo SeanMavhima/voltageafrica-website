@@ -1,0 +1,53 @@
+{
+  "name": "voltageafrica-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "assets": "python scripts/prepare-assets.py",
+    "db:seed:generate": "tsx --tsconfig tsconfig.json scripts/db/generate-seed.ts",
+    "db:test": "node scripts/db/test.mjs",
+    "cms:test": "tsx --tsconfig tsconfig.json scripts/cms/validate-seed.ts",
+    "engagement:test": "tsx --tsconfig tsconfig.json scripts/engagement/validate.ts",
+    "lab:test": "tsx --tsconfig tsconfig.json --test scripts/energy-lab/engine.test.ts",
+    "test": "npm run db:seed:generate && npm run db:test && npm run cms:test && npm run engagement:test && npm run lab:test && tsc --noEmit",
+    "admin:create": "node scripts/create-admin.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.2",
+    "@tiptap/pm": "^3.34.0",
+    "@tiptap/react": "^3.34.0",
+    "@tiptap/starter-kit": "^3.34.0",
+    "lucide-react": "1.76.0",
+    "motion": "14.14.0",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sanitize-html": "^2.18.2",
+    "server-only": "^0.0.1",
+    "three": "0.187.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.17",
+    "@tailwindcss/postcss": "4.3.5",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.2",
+    "@types/three": "0.187.0",
+    "tailwindcss": "4.3.5",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3"
+  }
+}
